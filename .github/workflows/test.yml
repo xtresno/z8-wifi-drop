@@ -1,0 +1,85 @@
+name: test
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  unit:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyftpdlib
+      - run: python -m unittest -v test_wifi_drop
+        working-directory: tests
+
+  windows-install:
+    # The real installer on a real Windows PC, then an upload like the camera's.
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        shell: powershell
+        run: .\install-windows.ps1 -Yes
+      - name: Startup task is running
+        shell: powershell
+        run: |
+          $t = Get-ScheduledTask -TaskName "Z8 Wi-Fi Drop"
+          $t | Format-List TaskName, State
+          if ($t.State -ne "Running") { throw "task not running" }
+      - name: Firewall rules exist and are LAN-only
+        shell: powershell
+        run: |
+          foreach ($n in "Z8 Wi-Fi FTP", "Z8 FTP passive") {
+            $r = Get-NetFirewallRule -DisplayName $n
+            $a = $r | Get-NetFirewallAddressFilter
+            "$n -> $($a.RemoteAddress) / $($r.Profile)"
+            if ($a.RemoteAddress -ne "LocalSubnet") { throw "$n is not LocalSubnet" }
+          }
+      - name: Desktop files
+        shell: powershell
+        run: |
+          $d = [Environment]::GetFolderPath("Desktop")
+          Get-Content "$d\Z8 camera settings.txt"
+          if (-not (Test-Path "$d\Z8 Photo Sorter.lnk")) { throw "no shortcut" }
+      - name: Upload like the camera, then sort
+        run: .\.venv\Scripts\python.exe tests\ci_install_check.py
+      - name: Uninstall
+        shell: powershell
+        run: |
+          .\install-windows.ps1 -Uninstall
+          if (Get-ScheduledTask -TaskName "Z8 Wi-Fi Drop" -ErrorAction SilentlyContinue) { throw "task left behind" }
+      - name: Server log
+        if: always()
+        shell: powershell
+        run: Get-Content "$env:USERPROFILE\AppData\Roaming\z8-wifi-drop\server.log" -ErrorAction SilentlyContinue
+
+  linux-install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Start a systemd user session for the runner
+        run: |
+          sudo loginctl enable-linger "$USER"
+          for i in $(seq 20); do [ -S "/run/user/$(id -u)/bus" ] && break; sleep 0.5; done
+          echo "XDG_RUNTIME_DIR=/run/user/$(id -u)" >> "$GITHUB_ENV"
+      - name: Install
+        run: ./install-linux.sh
+      - name: Upload like the camera, then sort
+        run: .venv/bin/python tests/ci_install_check.py
+      - name: Uninstall
+        run: ./install-linux.sh --uninstall
+      - name: Server log
+        if: always()
+        run: journalctl --user -u z8-wifi-drop --no-pager | tail -30
