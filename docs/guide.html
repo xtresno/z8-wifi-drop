@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Z8 Wi-Fi Photo Transfer: Setup Guide</title>
+<style>
+  @page { size: Letter; margin: 0.55in 0.6in; }
+  :root { --ink: #1a1a1a; --muted: #555; --line: #d0d0d0; --accent: #b8860b; --warn: #a33; --box: #f6f4ee; }
+  * { box-sizing: border-box; }
+  body { font-family: "DejaVu Sans", Arial, sans-serif; color: var(--ink); font-size: 10.5pt; line-height: 1.38; margin: 0; background: #fff; }
+  h1 { font-size: 21pt; margin: 0 0 2px; }
+  h2 { font-size: 14pt; margin: 18px 0 6px; padding-bottom: 3px; border-bottom: 2px solid var(--accent); break-after: avoid; }
+  h3 { font-size: 11.5pt; margin: 12px 0 4px; break-after: avoid; }
+  p { margin: 4px 0; }
+  .sub { color: var(--muted); margin-bottom: 10px; }
+  ol, ul { margin: 4px 0 6px; padding-left: 22px; }
+  li { margin: 2px 0; }
+  code, .v { font-family: "DejaVu Sans Mono", Consolas, monospace; font-size: 10pt; background: #eee; padding: 0 3px; border-radius: 2px; }
+  .box { background: var(--box); border: 1px solid var(--line); border-radius: 6px; padding: 8px 12px; margin: 8px 0; break-inside: avoid; }
+  .warn { border-left: 5px solid var(--warn); }
+  .tip { border-left: 5px solid var(--accent); }
+  table { border-collapse: collapse; width: 100%; margin: 6px 0; break-inside: avoid; }
+  th, td { border: 1px solid var(--line); padding: 4px 7px; text-align: left; vertical-align: top; }
+  th { background: #eee; }
+  .fill td:last-child { height: 26px; width: 55%; }
+  .step { display: grid; grid-template-columns: 1fr 200px; gap: 12px; align-items: start; margin: 8px 0; break-inside: avoid; }
+  .step img { width: 200px; border-radius: 4px; border: 1px solid #333; }
+  .cap { font-size: 8.5pt; color: var(--muted); margin-top: 2px; }
+  .n { display: inline-block; min-width: 20px; height: 20px; border-radius: 10px; background: var(--ink); color: #fff; text-align: center; font-weight: bold; font-size: 9.5pt; line-height: 20px; margin-right: 6px; }
+  .flow { display: flex; align-items: center; gap: 6px; margin: 8px 0 4px; font-weight: bold; font-size: 9pt; white-space: nowrap; }
+  .flow span.b { border: 2px solid var(--ink); border-radius: 6px; padding: 5px 10px; }
+  .page { break-before: page; }
+  .check { font-family: "DejaVu Sans"; }
+</style>
+</head>
+<body>
+
+<h1>Z8 Wi-Fi Photo Transfer</h1>
+<p class="sub">Each photo you take in the garage appears on your PC upstairs about 2 seconds later. No cable. One-time setup: about 20 minutes.</p>
+
+<div class="flow"><span class="b">Nikon Z8</span> → Wi-Fi → <span class="b">your PC</span> → <span class="b">C:\QDAM\Listings\Incoming</span> → <span class="b">ROLEX-116610_01.jpg ...</span></div>
+
+<div class="box tip"><b>You need:</b> the Windows PC, the Z8 with a charged battery, your home Wi-Fi name and password, and about 20 minutes.
+Do Part A at the PC first, then Part B at the camera.</div>
+
+<h2>Part A: Set up the PC (about 10 minutes)</h2>
+<ol>
+  <li><span class="check">☐</span> Install <b>Python 3</b> from <b>python.org/downloads</b>. On the first install screen, tick <b>"Add python.exe to PATH"</b>.</li>
+  <li><span class="check">☐</span> Go to <b>github.com/xtresno/z8-wifi-drop</b>. Click the green <b>Code</b> button, then <b>Download ZIP</b>.</li>
+  <li><span class="check">☐</span> Unzip it to <code>C:\z8-wifi-drop</code>. Do not run it from the Downloads folder; it must stay where it is.</li>
+  <li><span class="check">☐</span> Double-click <b>Install.bat</b>. Click <b>Yes</b> when Windows asks for admin rights.</li>
+  <li><span class="check">☐</span> If it asks "Set the network to Private?", type <b>y</b> and press Enter.</li>
+  <li><span class="check">☐</span> When it finishes, open <b>"Z8 camera settings.txt"</b> on the desktop. Copy the values here:</li>
+</ol>
+<table class="fill">
+  <tr><th>Setting</th><th>Write it here</th></tr>
+  <tr><td>Address (this PC)</td><td></td></tr>
+  <tr><td>Port</td><td><b>2121</b> (always)</td></tr>
+  <tr><td>User ID</td><td><b>z8</b> (always)</td></tr>
+  <tr><td>Password (8 letters/numbers)</td><td></td></tr>
+  <tr><td>Home Wi-Fi name</td><td></td></tr>
+</table>
+<div class="box tip"><b>Tip:</b> the PC address can change when the router restarts. Ask whoever runs the router to give this PC a <b>fixed address</b> (called a "DHCP reservation"). Then you never need to change the camera again.</div>
+
+<h2 class="page">Part B: Set up the camera (about 10 minutes)</h2>
+<p>To <b>save</b> typed text, press the <b>zoom-in (+) button</b>, above MENU. To <b>go back</b>, tap the ↺ arrow at the top right.</p>
+
+<div class="step"><div>
+  <p><span class="n">1</span><b>MENU</b> › <b>Network menu</b> (the globe icon). Check <b>Airplane mode</b> is <b>OFF</b>.</p>
+  <p><span class="n">2</span><b>Connect to FTP server</b> › <b>Network settings</b> › <b>Create profile</b>.</p>
+  <p><span class="n">3</span>Pick <b>Configure manually</b>, not the wizard. The wizard uses port 21, which is wrong here.</p>
+</div><div><img src="img/01-create-profile.jpg"><div class="cap">Step 3: pick Configure manually.</div></div></div>
+
+<div class="step"><div>
+  <p><span class="n">4</span>Pick <b>Wireless LAN</b>.</p>
+  <p>You now see the list <b>General / Wireless / TCP/IP / FTP</b>. Leave General as it is.</p>
+</div><div><img src="img/02-wireless-lan.jpg"><div class="cap">Step 4: Wireless LAN.</div></div></div>
+
+<div class="step"><div>
+  <p><span class="n">5</span><b>Wireless</b> › <b>SSID</b>: type the home Wi-Fi name <b>exactly</b>. Capitals count. Tap the letters on the screen. <b>Aa&amp;</b> switches between capitals, small letters and symbols. The trash-can button deletes a letter.</p>
+  <p><span class="n">6</span>Leave <b>Authentication/encryption</b> as it is. Scroll down to <b>Password</b>: type the Wi-Fi password.</p>
+</div><div><img src="img/04-wireless-ssid.jpg"><div class="cap">Step 5: SSID is the Wi-Fi name.</div><img src="img/05-keyboard.jpg" style="margin-top:6px"><div class="cap">The keyboard. (+) button = save.</div></div></div>
+
+<div class="step"><div>
+  <p><span class="n">7</span>Go back. <b>TCP/IP</b> › <b>Obtain automatically</b>: <b>ON</b>. Type nothing else here.</p>
+</div><div><img src="img/06-tcpip.jpg"><div class="cap">Step 7: Obtain automatically ON.</div></div></div>
+
+<div class="step"><div>
+  <p><span class="n">8</span>Go back. <b>FTP</b>:</p>
+  <ul>
+    <li><b>Server type</b>: FTP</li>
+    <li><b>Address</b>: the PC address from Part A. The dot (.) is on the symbols page (Aa&amp;).</li>
+    <li><b>Folder</b>: leave blank</li>
+    <li><b>Port</b>: change <b>21</b> to <b>2121</b>. Left/right = move, up/down = change digit.</li>
+    <li><b>PASV mode</b>: ON</li>
+  </ul>
+</div><div><img src="img/07-ftp-defaults.jpg"><div class="cap">Before: Port says 21. Change it to 2121.</div></div></div>
+
+<div class="step"><div>
+  <p><span class="n">9</span>Scroll down in FTP:</p>
+  <ul>
+    <li><b>Anonymous login</b>: switch to <b>OFF</b>. It starts ON, and ON does <b>not</b> work.</li>
+    <li><b>User ID</b>: <code>z8</code> (small letters)</li>
+    <li><b>Password</b>: the 8-letter password from Part A (small letters)</li>
+  </ul>
+</div><div><img src="img/09-ftp-login.jpg"><div class="cap">Wrong: Anonymous login ON. Switch it OFF, then fill in User ID and Password.</div></div></div>
+
+<div class="step"><div>
+  <p><span class="n">10</span>Back out to <b>Network settings</b>. Highlight your profile (WLAN1, WLAN2 ...) and press <b>OK</b> to connect.</p>
+  <p><b>"FTP" in green</b> on the shooting screen = connected. Red = error (see Part E).</p>
+  <p>To <b>edit</b> a profile later: highlight it and press <b>RIGHT</b>, not OK.</p>
+</div><div><img src="img/10-network-settings.jpg"><div class="cap">The yellow outline marks the profile in use.</div></div></div>
+
+<h2>Part C: Upload options (one time, about 1 minute)</h2>
+<p><b>MENU</b> › <b>Network menu</b> › <b>Connect to FTP server</b> › <b>Options</b>:</p>
+<table>
+  <tr><th>Option</th><th>Set to</th><th>Why</th></tr>
+  <tr><td>Auto upload</td><td><b>ON</b></td><td>Every shot is sent by itself.</td></tr>
+  <tr><td>Upload RAW + JPEG as</td><td><b>JPEG only</b></td><td>A RAW file is 50 MB and takes 4.5 s; a JPEG takes 1.6 s.</td></tr>
+  <tr><td>Keep connection</td><td><b>ON</b></td><td>The camera reconnects after a Wi-Fi drop (uses more battery).</td></tr>
+  <tr><td>Overwrite if same name</td><td><b>OFF</b></td><td>A photo already sent is never replaced.</td></tr>
+  <tr><td>Delete after upload</td><td><b>OFF</b></td><td>The memory card stays as a backup.</td></tr>
+</table>
+<p>Also set the camera clock: <b>Setup menu</b> › <b>Time zone and date</b>. Match the PC clock, including daylight saving time.</p>
+
+<h2>Part D: Every shoot</h2>
+<ol>
+  <li>Turn on the camera. Wait for <b>"FTP" in green</b>.</li>
+  <li>On the PC, double-click <b>Z8 Photo Sorter</b> on the desktop.</li>
+  <li>Type the item ID (for example <code>ROLEX-116610</code>) and press Enter.</li>
+  <li>Shoot. Each photo becomes <code>ROLEX-116610_01.jpg</code>, <code>_02</code> ... in <code>C:\QDAM\Listings\ROLEX-116610\</code>.</li>
+  <li>Next item: wait until the last photo shows up, then type the next ID.</li>
+</ol>
+
+<div class="box tip"><b>Two PCs, one camera?</b> Make one profile per PC (for example WLAN1 = upstairs PC, WLAN2 = other PC). The camera sends to one PC at a time: in <b>Network settings</b>, highlight the PC's profile and press <b>OK</b>.</div>
+
+<h2>Part E: If something is wrong</h2>
+<table>
+  <tr><th>What you see</th><th>Do this</th></tr>
+  <tr><td>"FTP" is red on the camera</td><td>Check the Address, Port <b>2121</b>, User ID <b>z8</b>, and the password. Check that <b>Anonymous login is OFF</b>.</td></tr>
+  <tr><td>The camera cannot find the Wi-Fi</td><td>Retype the Wi-Fi name and password. Capitals count. Move the router or the camera closer.</td></tr>
+  <tr><td>It worked yesterday, not today</td><td>The PC address may have changed. Open "Z8 camera settings.txt", or run Install.bat again, and compare with the camera's Address.</td></tr>
+  <tr><td>No photos arrive, "FTP" is green</td><td>Options › <b>Auto upload ON</b>. Is the PC on and awake?</td></tr>
+  <tr><td>Photos are slow</td><td>Options › Upload RAW + JPEG as › <b>JPEG only</b>. Weak Wi-Fi in the garage: add a mesh node or access point there.</td></tr>
+  <tr><td>Anything else</td><td>Ask Claude Code (below).</td></tr>
+</table>
+
+<div class="box tip"><b>Ask Claude Code for help.</b> Open a terminal in <code>C:\z8-wifi-drop</code>, run <code>claude</code>, and say what you see, for example: <i>"the camera says FTP in red, help me fix it"</i>. It reads the logs on this PC and walks you through the camera menus one step at a time. Take photos of the camera screen and give them to it.</div>
+
+<p class="sub" style="margin-top:14px">Measured on 2026-10-25: Z8 in the garage, router indoors. 0% packet loss; JPEG Fine (17 MB) in 1.6 s; RAW (50 MB) in 4.5 s. · github.com/xtresno/z8-wifi-drop</p>
+</body>
+</html>
