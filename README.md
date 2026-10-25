@@ -1,12 +1,24 @@
 # z8-wifi-drop
 
-Send photos from a Nikon Z8 (or Z9) to a PC over Wi-Fi as you shoot, then
-rename them per item for eBay / Etsy listings: `ROLEX-116610_01.jpg`, `_02` ...
+**Take a photo with your Nikon Z8. About 2 seconds later it is on your PC.**
+No cable, no Nikon software.
 
-No Nikon software is needed. The camera's built-in **FTP upload** sends each
-shot to a small server on the PC. Works on **Windows** and **Linux**.
+Optionally, type a name like `LAMP-042` and every new photo is renamed
+`LAMP-042_01.jpg`, `LAMP-042_02.jpg` ... into its own folder.
 
-**Printable step-by-step guide:** [docs/Z8-WiFi-Setup-Guide.pdf](docs/Z8-WiFi-Setup-Guide.pdf)
+How: the camera has FTP upload built in. This project is the small program
+on the PC that receives the photos. Works on **Windows** and **Linux**.
+
+**Printable step-by-step guide (with camera screen photos):**
+[docs/Z8-WiFi-Setup-Guide.pdf](docs/Z8-WiFi-Setup-Guide.pdf)
+
+## Good for
+
+- **Product photos:** shoot items in a photo booth or garage, and each item gets its own folder of numbered photos.
+- **Studio work:** check focus and lighting on a big screen in another room while you shoot.
+- **Inventory and records:** photograph parts, artwork, or collections with an ID per piece.
+- **Real estate, interiors, events:** photos are backed up to the PC as you go.
+- **Two people, one camera:** one person shoots, another edits upstairs at the same time.
 
 ## Quick start (Windows)
 
@@ -15,7 +27,7 @@ shot to a small server on the PC. Works on **Windows** and **Linux**.
 3. Double-click **`Install.bat`** and say **Yes** to the admin prompt.
 4. Open **`Z8 camera settings.txt`** on the desktop. Type those values into the camera (see the guide).
 5. Shoot. Photos land in `C:\QDAM\Listings\Incoming`.
-6. To rename per item: double-click **Z8 Photo Sorter** on the desktop and type the item ID.
+6. Optional, to rename per item: double-click **Z8 Photo Sorter** on the desktop and type a name like `LAMP-042`.
 
 ## Quick start (Linux)
 
@@ -36,7 +48,7 @@ Photos land in `~/QDAM/Listings/Incoming`.
 | `install-linux.sh` | Linux setup: venv, systemd user service, ufw rules. |
 | `tests/` | `cd tests && python -m unittest test_wifi_drop`. CI runs them on Windows and Linux. |
 
-## Measured (Z8 in a garage, router indoors, 2026-10-25)
+## Measured speed (Z8 in a garage, router indoors)
 
 | | Result |
 |---|---|
@@ -44,7 +56,7 @@ Photos land in `~/QDAM/Listings/Incoming`.
 | JPEG Fine (~17 MB) | 1.6 s per photo, ~85 Mbit/s |
 | RAW (NEF, ~50 MB) | 4.5 s per photo |
 
-Upload only JPEGs for listings: **Options > Upload RAW + JPEG as > JPEG only**.
+For speed, upload JPEGs only: **Options > Upload RAW + JPEG as > JPEG only**.
 
 ## Safety
 

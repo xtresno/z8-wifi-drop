@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Sort new photos from Incoming into one folder per watch.
+"""Sort new photos from Incoming into one folder per item.
 
-Type a watch ID (for example ROLEX-116610) and press Enter. Each new JPEG in
-Incoming is renamed WATCHID_01.jpg, WATCHID_02.jpg, ... and moved to
-Listings/WATCHID/. Type a new ID for the next watch. Enter alone shows the
+Type an item ID (for example LAMP-042) and press Enter. Each new JPEG in
+Incoming is renamed LAMP-042_01.jpg, LAMP-042_02.jpg, ... and moved to
+Listings/LAMP-042/. Type a new ID for the next item. Enter alone shows the
 status. q quits.
 
 A file is moved only when it is complete: the FTP server logged it "done", or
@@ -29,7 +29,7 @@ RESERVED = {"CON", "PRN", "AUX", "NUL", *(f"COM{i}" for i in range(10)), *(f"LPT
 
 
 def clean_id(text):
-    """Upper-case watch ID safe as a folder name on Linux and Windows, or None."""
+    """Upper-case item ID safe as a folder name on Linux and Windows, or None."""
     wid = text.strip().upper()
     if re.fullmatch(r"[A-Z0-9][A-Z0-9_-]{0,39}", wid) and wid not in RESERVED:
         return wid
@@ -163,8 +163,8 @@ def main():
     waiting = sum(1 for f in common.INCOMING.iterdir() if f.suffix.lower() in common.PHOTO_EXTS)
     print(f"Watching {common.INCOMING}")
     if waiting:
-        print(f"{waiting} photo(s) already waiting. They go to the first watch ID you type.")
-    print("Type a watch ID and press Enter. Enter alone = status. q = quit.")
+        print(f"{waiting} photo(s) already waiting. They go to the first item ID you type.")
+    print("Type an item ID and press Enter. Enter alone = status. q = quit.")
 
     def loop():
         while not state["stop"]:
@@ -190,7 +190,7 @@ def main():
                 break
             if not text:
                 with lock:
-                    print(f"Watch: {state['wid'] or '(none yet)'}. Moved this watch: {state['count']}.")
+                    print(f"Item: {state['wid'] or '(none yet)'}. Photos for this item: {state['count']}.")
                 continue
             wid = clean_id(text)
             if not wid:

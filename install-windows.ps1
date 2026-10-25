@@ -103,7 +103,7 @@ $lnk = $ws.CreateShortcut($Shortcut)
 $lnk.TargetPath = "$Here\.venv\Scripts\python.exe"
 $lnk.Arguments = "`"$Here\watcher.py`""
 $lnk.WorkingDirectory = $Here
-$lnk.Description = "Rename new Z8 photos to WATCHID_01.jpg ..."
+$lnk.Description = "Rename new Z8 photos to ITEMID_01.jpg ..."
 $lnk.Save()
 
 # 8. Wait for the server, then print and save what to type on the camera

@@ -167,7 +167,7 @@ class TestServer(unittest.TestCase):
 
 class TestWatcher(unittest.TestCase):
     def test_clean_id(self):
-        self.assertEqual(watcher.clean_id(" rolex-116610 "), "ROLEX-116610")
+        self.assertEqual(watcher.clean_id(" lamp-042 "), "LAMP-042")
         for bad in ["", "../x", "a b", "con", "x" * 41, "-lead", "a/b", "a\\b"]:
             self.assertIsNone(watcher.clean_id(bad), bad)
 
